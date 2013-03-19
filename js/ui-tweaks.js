@@ -23,7 +23,7 @@
         tweakWidget: function (elem) {
             var behavior = this,
                 selectors = ['.form-type-checkboxes .form-item',
-                             '.form-type-radio .form-item'];
+                             '.form-type-radios .form-item'];
 
             elem.find(selectors.join(', ')).each(function () {
                 behavior.tweakFormItem($(this));
