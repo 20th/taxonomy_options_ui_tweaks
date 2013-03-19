@@ -21,7 +21,7 @@
  */
 
 /**
- * Implements hook_widget_form_alter().
+ * Implements hook_field_widget_form_alter().
  */
 function taxonomy_options_ui_tweaks_field_widget_form_alter(&$element, &$form_state, $context) {
   $field  = $context['field'];
