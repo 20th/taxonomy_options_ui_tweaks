@@ -35,7 +35,7 @@
                 labelHtml = label.html();
 
             if (labelHtml == '') {
-                return FALSE;
+                return false;
             }
 
             for (var i = 0; i < labelHtml.length; i++) {
@@ -50,7 +50,7 @@
 
             elem.html(labelHtml);
             this.stylePadders(elem.find('.ui-tweak-padder'));
-            return TRUE;
+            return true;
         },
 
         stylePadders: function (padders) {
