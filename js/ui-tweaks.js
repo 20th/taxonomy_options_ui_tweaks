@@ -48,7 +48,7 @@
                 }
             }
 
-            elem.html(labelHtml);
+            label.html(labelHtml);
             this.stylePadders(elem.find('.ui-tweak-padder'));
             return true;
         },
