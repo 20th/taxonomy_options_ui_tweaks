@@ -1,0 +1,3 @@
+name = Taxonomy options UI tweaks
+description = Improves the usability of Drupal's taxonomy widgets.
+core = 7.x
