@@ -1,3 +1,5 @@
+/* This file is part of the taxonomy_options_ui_tweaks module for Drupal 7 */
+
 ;(function ($, Drupal, undefined) {
     "use strict";
 
