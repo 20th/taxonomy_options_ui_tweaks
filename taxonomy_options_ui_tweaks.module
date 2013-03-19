@@ -4,3 +4,37 @@
  * @file
  * Initializes UI tweaks provided by the module.
  */
+
+/**
+ * Implements hook_widget_form_alter().
+ */
+function taxonomy_options_ui_tweaks_field_widget_form_alter(&$element, &$form_state, $context) {
+  $field  = $context['field'];
+  $widget = $context['instance']['widget'];
+
+  if (_taxonomy_options_ui_tweaks_supported($field, $widget)) {
+    $path = drupal_get_path('module', 'taxonomy_options_ui_tweaks');
+    $path .= '/js/ui-tweaks.js';
+
+    // drupal_add_js() makes sure that any file is included on the page only
+    // once, so we do not need to worry about it.
+    drupal_add_js($path);
+  }
+}
+
+/**
+ * Checks that the tweaking of a particular field and widget is supported.
+ *
+ * This module can safely tweak only several widgets that are used to input
+ * data into some supported fields. In a particular combination is not
+ * supported there is no need to anything.
+ */
+function _taxonomy_options_ui_tweaks_supported($field, $widget) {
+  if ($field['type'] == 'taxonomy_term_reference') {
+    if ($widget['type'] == 'options_buttons') {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
