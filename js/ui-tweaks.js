@@ -20,6 +20,36 @@
 
         tweakWidget: function (elem) {
             var behavior = this;
+            elem.find('.form-type-checkboxes .form-item').each(function () {
+                behavior.tweakFormItem($(this));
+            });
+        },
+
+        tweakFormItem: function (elem) {
+            var label = elem.find('label'),
+                labelHtml = label.html();
+
+            if (labelHtml == '') {
+                return FALSE;
+            }
+
+            for (var i = 0; i < labelHtml.length; i++) {
+                if (labelHtml.substr(0, 1) == '-') {
+                    elem.prepend('<span class="ui-tweak-padder"></span>');
+                    labelHtml = labelHtml.substr(1);
+                }
+                else {
+                    break;
+                }
+            }
+
+            elem.html(labelHtml);
+            this.stylePadders(elem.find('.ui-tweak-padder'));
+            return TRUE;
+        },
+
+        stylePadders: function (padders) {
+            padders.css({ display: 'inline-block', width: '30px' });
         }
     };
 })(jQuery, Drupal);
