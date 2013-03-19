@@ -21,8 +21,11 @@
         },
 
         tweakWidget: function (elem) {
-            var behavior = this;
-            elem.find('.form-type-checkboxes .form-item').each(function () {
+            var behavior = this,
+                selectors = ['.form-type-checkboxes .form-item',
+                             '.form-type-radio .form-item'];
+
+            elem.find(selectors.join(', ')).each(function () {
                 behavior.tweakFormItem($(this));
             });
         },
