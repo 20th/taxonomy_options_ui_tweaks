@@ -8,7 +8,8 @@
     Drupal.behaviors.taxonomyOptionsUiTweaks = {
         attach: function (context, settings) {
             var behavior = this,
-                selectors = ['.form-field-type-taxonomy-term-reference'];
+                selectors = ['.form-field-type-taxonomy-term-reference',
+                             '.field-type-taxonomy-term-reference'];
 
             $(selectors.join(', ')).each(function () {
                 var $this = $(this);
