@@ -157,7 +157,7 @@
                 selectors = ['.form-field-type-taxonomy-term-reference',
                              '.field-type-taxonomy-term-reference'];
 
-            $(selectors.join(', ')).each(function () {
+            $(selectors.join(', '), context).each(function () {
                 var $this = $(this);
 
                 if (!$this.hasClass(TWEAKED_CLASS)) {
