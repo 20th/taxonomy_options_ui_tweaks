@@ -5,6 +5,119 @@
 
     var TWEAKED_CLASS = 'taxonomy-options-ui-tweaked';
 
+
+    function Widget() {
+        this.init.apply(this, arguments);
+    }
+    Widget.prototype = {
+
+        optionsStyle: {
+            'max-height': '350px',
+            'overflow': 'auto'
+        },
+
+        elem: null,
+        formItems: [],
+        summary: null,
+
+        init: function (elem) {
+            var selectors = ['.form-type-checkboxes .form-item',
+                             '.form-type-radios .form-item'];
+
+            this.elem = elem;
+            this.formItems = elem.find(selectors.join(', '));
+            this.summary = new WidgetSummary();
+
+            this.elem.find('.form-checkboxes, .form-radios').css(this.optionsStyle);
+
+            this.placeSummary();
+            this.attachEvents();
+        },
+
+        placeSummary: function () {
+            this.elem.find('> .form-item > label').after(this.summary.view);
+            this.summary.updateView();
+        },
+
+        attachEvents: function () {
+            var this_ = this;
+            this.formItems.each(function () {
+                var $item = $(this),
+                    $input = $item.find('input'),
+                    $label = $item.find('label');
+
+                $input.change(function () {
+                    if ($input.is(':checked')) {
+                        this_.summary.add($label.text());
+                    } else {
+                        this_.summary.remove($label.text());
+                    }
+                });
+
+                // Add initially cheched.
+                if ($input.is(':checked')) {
+                    this_.summary.add($label.text());
+                }
+            });
+        }
+
+    };
+
+
+    function WidgetSummary() {
+        this.init.apply(this, arguments);
+    };
+    WidgetSummary.prototype = {
+
+        items: [],
+        view: null,
+        valuesContainer: null,
+
+        init: function () {
+            var summary = $('<div class="description ui-tweak-widget-summary"></div>'),
+                label = $('<b>Выбрано: </b>'),
+                values = $('<span class="values"></span>');
+
+            summary.append(label);
+            summary.append(values);
+
+            this.items = [];
+            this.view = summary;
+            this.valuesContainer = values;
+        },
+
+        updateView: function () {
+            this.valuesContainer.text(this.items.join(', '));
+        },
+
+        add: function (item) {
+            for (var i in this.items) {
+                if (this.items[i] == item) {
+                    return true;
+                }
+            }
+            this.items.push(item);
+            this.items.sort();
+            this.updateView();
+            return true;
+        },
+
+        remove: function (item) {
+            var filtered = [];
+            for (var i in this.items) {
+                if (this.items[i] != item) {
+                    filtered.push(this.items[i]);
+                }
+            }
+            this.items = filtered;
+            this.items.sort();
+            this.updateView();
+            return true;
+        }
+
+    };
+
+
     Drupal.behaviors.taxonomyOptionsUiTweaks = {
         attach: function (context, settings) {
             var behavior = this,
@@ -16,6 +129,7 @@
 
                 if (!$this.hasClass(TWEAKED_CLASS)) {
                     $this.addClass(TWEAKED_CLASS);
+                    new Widget($this);
                     behavior.tweakWidget($this);
                 }
             });
