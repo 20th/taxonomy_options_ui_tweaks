@@ -6,6 +6,15 @@
     var TWEAKED_CLASS = 'taxonomy-options-ui-tweaked';
 
 
+    function createPadderElement() {
+        return $('<span class="ui-tweak-padder"></span>')
+            .css({
+                display: 'inline-block',
+                width: '30px'
+            });
+    }
+
+
     function Widget() {
         this.init.apply(this, arguments);
     }
@@ -31,12 +40,35 @@
             this.elem.find('.form-checkboxes, .form-radios').css(this.optionsStyle);
 
             this.placeSummary();
+            this.insertPadders();
             this.attachEvents();
         },
 
         placeSummary: function () {
             this.elem.find('> .form-item > label').after(this.summary.view);
             this.summary.updateView();
+        },
+
+        insertPadders: function () {
+            var this_ = this;
+            this.formItems.each(function () {
+                var $item = $(this),
+                    $label = $item.find('label'),
+                    labelHtml = $label.html();
+
+                if (labelHtml != '') {
+                    for (var i = 0; i < labelHtml.length; i++) {
+                        if (labelHtml.substr(0, 1) == '-') {
+                            $item.prepend(createPadderElement());
+                            labelHtml = labelHtml.substr(1);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                    $label.html(labelHtml);
+                }
+            });
         },
 
         attachEvents: function () {
@@ -119,6 +151,7 @@
 
 
     Drupal.behaviors.taxonomyOptionsUiTweaks = {
+
         attach: function (context, settings) {
             var behavior = this,
                 selectors = ['.form-field-type-taxonomy-term-reference',
@@ -130,46 +163,9 @@
                 if (!$this.hasClass(TWEAKED_CLASS)) {
                     $this.addClass(TWEAKED_CLASS);
                     new Widget($this);
-                    behavior.tweakWidget($this);
                 }
             });
-        },
-
-        tweakWidget: function (elem) {
-            var behavior = this,
-                selectors = ['.form-type-checkboxes .form-item',
-                             '.form-type-radios .form-item'];
-
-            elem.find(selectors.join(', ')).each(function () {
-                behavior.tweakFormItem($(this));
-            });
-        },
-
-        tweakFormItem: function (elem) {
-            var label = elem.find('label'),
-                labelHtml = label.html();
-
-            if (labelHtml == '') {
-                return false;
-            }
-
-            for (var i = 0; i < labelHtml.length; i++) {
-                if (labelHtml.substr(0, 1) == '-') {
-                    elem.prepend('<span class="ui-tweak-padder"></span>');
-                    labelHtml = labelHtml.substr(1);
-                }
-                else {
-                    break;
-                }
-            }
-
-            label.html(labelHtml);
-            this.stylePadders(elem.find('.ui-tweak-padder'));
-            return true;
-        },
-
-        stylePadders: function (padders) {
-            padders.css({ display: 'inline-block', width: '30px' });
         }
+
     };
 })(jQuery, Drupal);
