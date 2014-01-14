@@ -25,19 +25,23 @@
             'overflow': 'auto'
         },
 
+        supportedWidgetTypes: [
+            '.form-type-checkboxes',
+            '.form-type-radios'
+        ],
+
         elem: null,
         formItems: [],
         summary: null,
 
         init: function (elem) {
-            var selectors = ['.form-type-checkboxes .form-item',
-                             '.form-type-radios .form-item'];
+            var selectors = this.supportedWidgetTypes.join(', ');
 
             this.elem = elem;
-            this.formItems = elem.find(selectors.join(', '));
+            this.formItems = elem.find(selectors).find('.form-item');
             this.summary = new WidgetSummary();
 
-            this.elem.find('.form-checkboxes, .form-radios').css(this.optionsStyle);
+            this.elem.find(selectors).css(this.optionsStyle);
 
             this.placeSummary();
             this.insertPadders();
@@ -92,7 +96,10 @@
                 }
             });
         }
-
+    };
+    Widget.isSupportedType = function (elem) {
+        var selectors = Widget.prototype.supportedWidgetTypes.join(', ');
+        return elem.find(selectors).length > 0;
     };
 
 
@@ -166,7 +173,9 @@
 
                 if (!$this.hasClass(TWEAKED_CLASS)) {
                     $this.addClass(TWEAKED_CLASS);
-                    new Widget($this);
+                    if (Widget.isSupportedType($this)) {
+                        new Widget($this);
+                    }
                 }
             });
         }
