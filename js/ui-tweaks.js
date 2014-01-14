@@ -119,7 +119,11 @@
         },
 
         updateView: function () {
-            this.valuesContainer.text(this.items.join(', '));
+            if (this.items.length) {
+                this.valuesContainer.text(this.items.join(', '));
+            } else {
+                this.valuesContainer.html('<i>- Нет -</i>');
+            }
         },
 
         add: function (item) {
