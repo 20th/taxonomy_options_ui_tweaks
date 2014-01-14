@@ -20,7 +20,7 @@
     }
     Widget.prototype = {
 
-        optionsStyle: {
+        style: {
             'max-height': '350px',
             'overflow': 'auto'
         },
@@ -35,13 +35,14 @@
         summary: null,
 
         init: function (elem) {
-            var selectors = this.supportedWidgetTypes.join(', ');
+            var selectors = this.supportedWidgetTypes.join(', '),
+                targets = elem.find(selectors);
 
             this.elem = elem;
-            this.formItems = elem.find(selectors).find('.form-item');
+            this.formItems = targets.find('.form-item');
             this.summary = new WidgetSummary();
 
-            this.elem.find(selectors).css(this.optionsStyle);
+            targets.find('> div:not(label, .description)').css(this.style);
 
             this.placeSummary();
             this.insertPadders();
