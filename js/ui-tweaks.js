@@ -167,7 +167,9 @@
         attach: function (context, settings) {
             var behavior = this,
                 selectors = ['.form-field-type-taxonomy-term-reference',
-                             '.field-type-taxonomy-term-reference'];
+                             '.field-type-taxonomy-term-reference',
+                             '.form-field-type-entityreference',
+                             '.field-type-entityreference'];
 
             $(selectors.join(', '), context).each(function () {
                 var $this = $(this);
